@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MultiplyMe</title>
+    <link rel="stylesheet" href="styles/gangeark.css"/>
+    <script src="lib/jquery/jquery-1.9.1.js"></script>
+    <script src="lib/knockout/knockout-2.3.0.js"></script>
+
+    <script type="application/javascript">
+
+        function doChangeInputboxVisibility()
+        {
+            var inputCB= $("#inputOnOff")[0];
+            var check= inputCB.checked;
+
+            var InputDivs= $(".gangeResultatDiv");
+            InputDivs.each(function(no, item) {
+                item.style.visibility= check ? 'visible' : 'hidden';
+            });
+            // alert("her");
+        }
+
+        function turnOnOrOffInputs(item)
+        {
+            doChangeInputboxVisibility();
+        }
+
+        var viewModel= {
+            noOfRows: 13,
+            noOfCols: 8,
+            targetArray: new ko.observableArray(),
+            resultArray: new ko.observableArray(),
+            turnOnOrOffInputs: doChangeInputboxVisibility
+
+//                    new function(caller, data)
+//                {
+//                    $("input").each(new function() {
+//                        var shouldShow= data.checked;
+//                        this.visible= shouldShow;
+//                    })
+//                }
+        };
+//        ko.applyBindings(viewModel);
+    </script>
+    <script type="application/javascript">
+
+        function generateTable()
+        {
+            var table= $('<table>', { id: "gangetab", className: "gangetable"})[0];
+//            var table= document.createElement('table');
+//            table.id= "gangetab";
+//            table.className= "gangetable";
+            var ark= $("#gangeark");
+            if (ark[0].children != undefined && ark[0].children.length > 0)
+            {
+                ark[0].removeChild(ark.elements[0]);
+            }
+            ark.append(table);
+            for(var i= 0; i < viewModel.noOfRows; i++) // viewModel.noOfRows
+            {
+                var current= table.insertRow();
+                current.className="gangerow";
+                for(var j= 0; j< viewModel.noOfCols; j++) // viewModel.noOfCols
+                {
+                    cell= current.insertCell();
+                    cell.className= "gangecell";
+                    var f1= 1 + Math.floor(Math.random()*10);
+                    var f2= 1 + Math.floor(Math.random()*10);
+
+//                    targetArray[i* viewModel.noOfRows + viewModel.noOfCols]= (f1*f2);
+
+                    cell.innerHTML= '<a class="multipliers"> '
+                            + f1.toString() + ' * ' + f2.toString()
+                            + ' = </a><div class="gangeResultatDiv"><input class="gangeResultat" type="text"/></div>';
+                }
+            }
+        };
+        $(document).ready(
+                function() {
+                    generateTable();
+                }
+            );
+    </script>
+</head>
+
+<body>
+    <p>MultiplyMe</p>
+    <div id="gangeark"></div>
+    <br/>
+    <input type="checkbox" id="inputOnOff" value= "1" onchange="doChangeInputboxVisibility()" data-bind="event: {change: }" /> Vis utfyllingsfunksjoner
+</body>
+
+</html>
